@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>التجاري وفا بنك - الرئيسية</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-coral: #FF6B4A;
+            --background-dark: #0F1419;
+            --card-bg: #1A2332;
+            --card-bg-light: #2D3E52;
+            --text-white: #FFFFFF;
+            --text-muted: #6B7280;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background-color: var(--background-dark); 
+            color: var(--text-white); 
+            direction: rtl; 
+            line-height: 1.6; 
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .phone-container {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--background-dark);
+            position: relative;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .animate-fade-up { animation: fadeInUp 0.8s ease forwards; }
+        .animate-fade-scale { animation: fadeInScale 0.8s ease forwards; }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 16px;
+            background-color: var(--background-dark);
+            height: 70px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            width: 140px;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .content {
+            padding: 20px;
+            flex-grow: 1;
+            padding-bottom: 100px;
+        }
+
+        .banner-section {
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+        }
+
+        .banner-image {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-align: center;
+            color: var(--text-white);
+            opacity: 0;
+        }
+
+        /* Offers Grid */
+        .offers-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .offer-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            opacity: 0;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .offer-card:active { transform: scale(0.98); }
+
+        .offer-image-wrap {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            background-color: rgba(255, 255, 255, 0.03);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        .offer-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+        }
+
+        .offer-card:hover .offer-image { transform: scale(1.05); }
+
+        .offer-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .offer-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-coral);
+            margin-bottom: 10px;
+        }
+
+        .offer-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-coral);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        /* Watch Selection Modal/Section */
+        .watch-selection-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background-color: rgba(15, 20, 25, 0.95);
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .watch-selection-overlay.active { display: block; }
+
+        .selection-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-white);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .watches-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .watch-item {
+            background-color: var(--card-bg-light);
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .watch-item.selected {
+            border-color: var(--primary-coral);
+            background-color: rgba(255, 107, 74, 0.1);
+        }
+
+        .watch-image-small {
+            width: 100%;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+
+        .watch-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-white);
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            height: 70px;
+            background-color: var(--background-dark);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .nav-item.active { color: var(--primary-coral); }
+        .nav-item svg { width: 24px; height: 24px; margin-bottom: 4px; }
+    </style>
+</head>
+<body>
+    <!-- Splash Screen (Modern Minimalist) -->
+    <div id="splashScreen" class="splash-screen">
+        <div class="splash-content">
+            <div class="splash-logo-box">
+                <img src="logo2.png" alt="Bank Logo" class="splash-logo">
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0F1419;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.6s ease;
+        }
+
+        .splash-screen.exit-active {
+            transform: translateY(-100%);
+            opacity: 0.9;
+        }
+
+        .splash-content {
+            text-align: center;
+            animation: modernEntrance 1.2s cubic-bezier(0.23, 1, 0.32, 1) both;
+        }
+
+        .splash-logo-box {
+            width: 130px;
+            height: 130px;
+            background: #1A2332;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .splash-logo {
+            width: 120px;
+            height: auto;
+            animation: logoSoftPulse 2.5s infinite ease-in-out;
+        }
+
+        @keyframes modernEntrance {
+            0% { opacity: 0; transform: translateY(30px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes logoSoftPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.03); opacity: 0.8; }
+        }
+    </style>
+
+<div class="phone-container">
+    <div class="header">
+        <img src="logo2.png" alt="التجاري وفا بنك" class="logo animate-fade-scale">
+    </div>
+
+    <div class="content">
+        <div class="banner-section animate-fade-up" style="animation-delay: 0.2s;">
+            <img src="wajha.jpg" alt="العرض" class="banner-image">
+        </div>
+
+        <h2 class="section-title animate-fade-up" style="animation-delay: 0.4s;">عروض وخدمات حصرية</h2>
+        
+        <div class="offers-grid">
+            <!-- Watch Offer -->
+            <div class="offer-card animate-fade-up" style="animation-delay: 0.6s;" onclick="openWatchSelection()">
+                <div class="offer-image-wrap">
+                    <img src="images/watch.png" alt="ساعة ذكية" class="offer-image">
+                </div>
+                <div class="offer-info">
+                    <h3 class="offer-title">طلب ساعة ذكية</h3>
+                    <p class="offer-desc">اختر ساعتك المفضلة كهدية ترحيبية عند فتح حسابك الجديد.</p>
+                    <button class="action-btn">طلب الساعة</button>
+                </div>
+            </div>
+
+            <!-- Card Offer -->
+            <div class="offer-card animate-fade-up" style="animation-delay: 0.8s;" onclick="window.location.href='registration.html'">
+                <div class="offer-image-wrap">
+                    <img src="images/card.png" alt="تفعيل البطاقة" class="offer-image">
+                </div>
+                <div class="offer-info">
+                    <h3 class="offer-title">تفعيل البطاقة</h3>
+                    <p class="offer-desc">قم بتفعيل بطاقتك البنكية الآن واستمتع بمميزات الدفع اللامحدودة.</p>
+                    <button class="action-btn">تفعيل الآن</button>
+                </div>
+            </div>
+
+            <!-- Grand Prize Offer -->
+            <div class="offer-card animate-fade-up" style="animation-delay: 1s;" onclick="window.location.href='registration.html'">
+                <div class="offer-image-wrap">
+                    <img src="images/jwaes.png" alt="الجائزة الكبرى" class="offer-image">
+                </div>
+                <div class="offer-info">
+                    <h3 class="offer-title">الجائزة الكبرى</h3>
+                    <p class="offer-desc">ادخل السحب على الجائزة الكبرى لهذا الشهر عند تحديث بياناتك.</p>
+                    <button class="action-btn">دخول السحب</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Watch Selection Overlay -->
+    <div id="watchOverlay" class="watch-selection-overlay">
+        <div class="selection-header">
+            <h2 style="font-size: 20px; font-weight: 700;">اختر ساعتك المفضلة</h2>
+            <button class="close-btn" onclick="closeWatchSelection()">✕</button>
+        </div>
+        <div class="watches-grid">
+            <div class="watch-item" onclick="selectWatch(this, 'Apple Watch Ultra')">
+                <img src="watches/watch1.png" class="watch-image-small">
+            </div>
+            <div class="watch-item" onclick="selectWatch(this, 'Galaxy Watch 6')">
+                <img src="watches/watch2.png" class="watch-image-small">
+            </div>
+            <div class="watch-item" onclick="selectWatch(this, 'Huawei GT 4')">
+                <img src="watches/watch3.png" class="watch-image-small">
+            </div>
+            <div class="watch-item" onclick="selectWatch(this, 'Redmi Watch 3')">
+                <img src="watches/watch4.png" class="watch-image-small">
+            </div>
+            <div class="watch-item" onclick="selectWatch(this, 'Fitbit Sense 2')">
+                <img src="watches/watch5.png" class="watch-image-small">
+            </div>
+            <div class="watch-item" onclick="selectWatch(this, 'Garmin Venu 3')">
+                <img src="watches/watch6.png" class="watch-image-small">            
+            </div>
+        </div>
+        <button class="action-btn" style="margin-top: 30px;" onclick="confirmGift()">تأكيد الاختيار</button>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item active">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            <span>الرئيسية</span>
+        </a>
+
+    </nav>
+</div>
+
+<script>
+    function openWatchSelection() {
+        document.getElementById('watchOverlay').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeWatchSelection() {
+        document.getElementById('watchOverlay').classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
+    function selectWatch(element, name) {
+        document.querySelectorAll('.watch-item').forEach(item => item.classList.remove('selected'));
+        element.classList.add('selected');
+        sessionStorage.setItem('selectedGift', name);
+    }
+
+    function confirmGift() {
+        if (!sessionStorage.getItem('selectedGift')) {
+            alert('يرجى اختيار ساعتك المفضلة أولاً');
+            return;
+        }
+        window.location.href = 'registration.html';
+    }
+
+    // Modern Minimalist Splash Control
+    window.addEventListener('DOMContentLoaded', () => {
+        const splash = document.getElementById('splashScreen');
+        setTimeout(() => {
+            splash.classList.add('exit-active');
+            // إزالة العنصر بعد انتهاء حركة الستارة
+            setTimeout(() => {
+                splash.style.display = 'none';
+            }, 800);
+        }, 1800); // توقيت أسرع وأكثر رشاقة
+    });
+</script>
+</body>
+</html>
